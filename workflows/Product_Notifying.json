@@ -1,0 +1,454 @@
+{
+  "updatedAt": "2026-01-10T14:23:16.633Z",
+  "createdAt": "2026-01-10T14:23:16.633Z",
+  "id": "d-guKGRBT_MGbdK4UVupC",
+  "name": "Product Notifying",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Leitor de preços\n\n",
+        "height": 704,
+        "width": 2352,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "c395d076-1088-4cf8-aacd-33b02cbab1cd",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        480,
+        208
+      ],
+      "id": "79a4dc0f-b2a8-410f-a4a5-e4c72f074862",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "task": "YmtQMEQtRWd1SVZiQlBmYg",
+        "returnAll": true,
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleTasks",
+      "typeVersion": 1,
+      "position": [
+        336,
+        464
+      ],
+      "id": "a89e3b17-ef00-4ddc-9729-9979d71ed325",
+      "name": "Get many tasks"
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1072,
+        320
+      ],
+      "id": "4ef89e09-8d88-4bc1-a557-b263d1c2f4b1",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Você é um motor de renderização de código estrito e filtro lógico (API Mode).\n\nENTRADA DE DADOS: {{ $json.texto }}\n\n--- REGRA SUPREMA DE FILTRAGEM (LEIA PRIMEIRO) ---\n1. Analise a lista de \"Itens Desejados\" e compare com as \"Ofertas encontradas\" no texto de entrada.\n2. Se NENHUM item da lista de desejos for encontrado nas ofertas disponíveis, PARE O PROCESSAMENTO DE HTML.\n3. Neste caso, sua resposta deve ser EXATAMENTE e APENAS o texto abaixo (sem formatação, sem aspas e sem HTML):\n   Nenhum dos itens disponíveis hoje corresponde aos itens desejados\n\n--- INSTRUÇÕES DE RENDERIZAÇÃO HTML ---\nCaso (e APENAS caso) pelo menos um item desejado seja encontrado, gere o código HTML seguindo as regras abaixo:\n\nCRITÉRIO DE SAÍDA:\n- NÃO escreva \"Aqui está o HTML\".\n- NÃO use blocos de markdown (```html).\n- Sua resposta deve começar EXATAMENTE com \"<!DOCTYPE html>\" e terminar com \"</html>\".\n\nREGRAS DE LÓGICA VISUAL:\n1. Na seção \"Encontrados da Lista\" (<ul>):\n   - Se o item foi ENCONTRADO: \n     <li style=\"color: #ff6b00; font-weight: bold; margin-bottom: 5px;\">✓ [Nome do Item]</li>\n   - Se o item NÃO foi encontrado: \n     <li style=\"color: #666666; margin-bottom: 5px;\">• [Nome do Item]</li>\n\n2. Nos Cards de Produto:\n   - Gere o bloco de card APENAS para os itens que deram \"match\" (foram encontrados). Ignorar ofertas que não estão na lista de desejos.\n   - Preencha os placeholders com os dados extraídos: [[URL_DA_IMAGEM]], [[TITULO_DO_PRODUTO]], [[NOME_DA_LOJA]], [[PRECO_FORMATADO]], [[LINK_DO_PRODUTO]].\n\n--- TEMPLATE HTML BASE ---\n\n<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n</head>\n<body style=\"margin: 0; padding: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: #141414; background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%); color: #ffffff;\">\n\n<div style=\"max-width: 600px; margin: 0 auto; padding: 20px 15px;\">\n\n  <div style=\"text-align: center; margin-bottom: 35px; padding-top: 20px;\">\n    <h1 style=\"color: #ffffff; margin: 0; font-size: 24px; letter-spacing: 1px; font-weight: 300; text-transform: uppercase;\">Monitoramento</h1>\n    <div style=\"height: 2px; width: 40px; background: #ff6b00; margin: 10px auto;\"></div>\n    <p style=\"color: #999999; margin-top: 10px; font-size: 13px;\">Relatório de oportunidades recentes</p>\n  </div>\n\n  <div style=\"background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 20px; margin-bottom: 30px;\">\n    <p style=\"margin: 0; font-size: 14px; color: #aaaaaa; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; margin-bottom: 10px;\">Status da Lista</p>\n    <ul style=\"margin: 0; padding: 0; list-style: none;\">\n      </ul>\n  </div>\n\n  <div style=\"background: #1f1f1f; border: 1px solid #333333; border-radius: 16px; overflow: hidden; margin-bottom: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.5);\">\n    \n    <div style=\"background-color: #ffffff; padding: 20px; text-align: center;\">\n      <img src=\"[[URL_DA_IMAGEM]]\" alt=\"Produto\" style=\"max-height: 180px; width: auto; max-width: 100%; object-fit: contain; display: block; margin: 0 auto;\" />\n    </div>\n\n    <div style=\"padding: 25px;\">\n      <h2 style=\"margin: 0 0 10px; font-size: 18px; color: #ffffff; line-height: 1.4; font-weight: 500;\">[[TITULO_DO_PRODUTO]]</h2>\n      \n      <p style=\"font-size: 13px; color: #aaaaaa; line-height: 1.5; margin-bottom: 20px; font-weight: 300;\">\n        Vendido por: <strong>[[NOME_DA_LOJA]]</strong>\n      </p>\n\n      <div style=\"display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 25px; border-top: 1px solid #333; padding-top: 15px;\">\n        <div>\n           <span style=\"font-size: 11px; color: #666; display: block; margin-bottom: 2px;\">Melhor Preço</span>\n           <span style=\"font-size: 24px; font-weight: 700; color: #ffffff;\">[[PRECO_FORMATADO]]</span>\n        </div>\n        <div style=\"text-align: right;\">\n           <div style=\"background: rgba(255, 107, 0, 0.15); border: 1px solid rgba(255, 107, 0, 0.3); color: #ff6b00; font-size: 11px; padding: 4px 10px; border-radius: 20px; display: inline-block; margin-bottom: 5px;\">\n             🔥 Quente\n           </div>\n           <div style=\"font-size: 10px; color: #888;\">Verificado</div>\n        </div>\n      </div>\n\n      <a href=\"[[LINK_DO_PRODUTO]]\" target=\"_blank\" style=\"display: block; width: 100%; background: #ff6b00; background: linear-gradient(90deg, #ff6b00 0%, #ff8c00 100%); color: white; text-align: center; padding: 16px 0; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(255, 107, 0, 0.4);\">\n        PEGAR PROMOÇÃO\n      </a>\n      \n    </div>\n  </div>\n  <div style=\"text-align: center; padding-top: 20px; border-top: 1px solid #333;\">\n    <p style=\"color: #555; font-size: 11px;\">Monitoramento Automático de Preços</p>\n  </div>\n\n</div>\n</body>\n</html>"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        1424,
+        336
+      ],
+      "id": "b3e0688f-e2d5-486a-a9a9-3c2c64705b96",
+      "name": "Message a model"
+    },
+    {
+      "parameters": {
+        "sendTo": "thigo.saquette@gmail.com ",
+        "subject": "Produtos de interesse (Pelando)",
+        "message": "={{ $json.content.parts[0].text }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1888,
+        448
+      ],
+      "id": "2efe56c9-2b0c-4fd7-99a2-c3d42076d305",
+      "name": "Send a message",
+      "webhookId": "c8f4617b-4f1b-4baa-a0cf-2c6ca572a0ac"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Pega o HTML do input (assumindo que vem de um nó HTTP Request ou similar)\nconst htmlData = $input.first().json.data || $input.first().json.html || \"\";\n\n// --- FUNÇÕES AUXILIARES ---\n\nconst cleanText = (text) => {\n    if (!text) return null;\n    return text\n        .replace(/<[^>]*>/g, '') \n        .replace(/&nbsp;/g, ' ')\n        .replace(/&amp;/g, '&')\n        .replace(/\\s+/g, ' ') \n        .trim();\n};\n\nconst parseNumber = (text) => {\n    if (!text) return null;\n    const clean = text\n        .replace(/[^\\d,\\.]/g, '') // Remove tudo que não é digito, virgula ou ponto\n        .replace(/\\./g, '')       // Remove ponto de milhar (padrão BR)\n        .replace(',', '.');       // Troca virgula decimal por ponto\n    const num = parseFloat(clean);\n    return isNaN(num) ? null : num;\n};\n\n// --- FLUXO PRINCIPAL DE ANÁLISE ---\n\n// 1. Regex para isolar cada CARD de produto\n// Procuramos por blocos que tenham a estrutura de um card padrão\nconst cardItems = [];\n// Essa regex procura o inicio de um card até a area de ações (botões), para pegar o bloco principal\nconst cardRegex = /class=\"[^\"]*default-deal-card_[^\"]*\"([\\s\\S]*?)class=\"[^\"]*default-deal-card-actions/gi;\nconst cardMatches = [...htmlData.matchAll(cardRegex)];\n\n// Vamos processar apenas os items encontrados (o limitador de 20 vc pode fazer no n8n ou aqui)\nconst limit = 20;\nconst selectedMatches = cardMatches.slice(0, limit);\n\nconst compras = selectedMatches.map((match, i) => {\n    const innerHtml = match[1]; // O conteúdo HTML do card\n\n    // 1. Extração de URL e Título\n    // Procura href que tenha data-deal-id (que indica ser um link de oferta)\n    const urlMatch = innerHtml.match(/href=\"([^\"]+)\"[^>]*data-deal-id/i);\n    const titleMatch = innerHtml.match(/class=\"[^\"]*default-deal-card-title[^\"]*\"[^>]*>([\\s\\S]*?)<\\/h3>/i);\n    \n    // 2. Extração de Imagem\n    // Procura tag img que tenha 'deal-card-image' na classe\n    const imgMatch = innerHtml.match(/src=\"([^\"]+)\"[^>]*class=\"[^\"]*deal-card-image/i);\n\n    // 3. Extração de Preço\n    // Procura o padrão R$ dentro do stamp de preço\n    const priceMatch = innerHtml.match(/<small>R\\$<\\/small>\\s*([\\d\\.,]+)/i);\n\n    // 4. Extração de Loja\n    // Procura o texto após \"Vendido por\"\n    const storeMatch = innerHtml.match(/Vendido por\\s*<\\/span>\\s*<a[^>]*>([^<]+)<\\/a>/i);\n\n    // --- TRATAMENTO DOS DADOS ---\n\n    let finalUrl = null;\n    if (urlMatch && urlMatch[1]) {\n        // Se a URL for relativa, adiciona o dominio\n        finalUrl = urlMatch[1].startsWith('http') ? urlMatch[1] : `https://www.pelando.com.br${urlMatch[1]}`;\n    }\n\n    const title = titleMatch ? cleanText(titleMatch[1]) : null;\n    const imageUrl = imgMatch ? imgMatch[1] : null;\n    const price = priceMatch ? parseNumber(priceMatch[1]) : null;\n    const store = storeMatch ? cleanText(storeMatch[1]) : \"Desconhecido / Pelando\";\n\n    return {\n        index: i + 1,\n        title: title,\n        image: imageUrl,\n        price: price,\n        store: store,\n        url: finalUrl\n    };\n});\n\n// Filtra itens vazios (caso tenha pego algum lixo no regex)\nconst result = compras.filter(item => item.title && item.url);\n\nreturn [{\n    json: {\n        total_encontrado: result.length,\n        dados: result\n    }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        736,
+        208
+      ],
+      "id": "f7225b7a-1677-4823-84d1-18b6e1b1f06c",
+      "name": "Extrai Produtos",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const tasks = $input.all().map(item => item.json);\n\n// Extrai apenas os títulos e formata\nconst itemsDesejados = tasks.map(task => ({\n  itemDesejado: task.title\n}));\n\nreturn [\n  {\n    json: {\n      itemsDesejados\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        464
+      ],
+      "id": "6db28a4a-2aa2-4040-894d-08df67b6c5e2",
+      "name": "Extrai itens"
+    },
+    {
+      "parameters": {
+        "jsCode": "const allInputs = $input.all();\n\n// 1. PEGAR OS DADOS\n// Ajuste importante: No código anterior, salvamos o resultado dentro de \"dados\".\n// Adicionei uma verificação de segurança (|| []) caso venha vazio.\nconst comprasDeHoje = allInputs[0].json.dados || allInputs[0].json.comprasDeHoje || [];\n\n// Mantendo a lógica para os inputs seguintes (assumindo que vêm de um Merge Node)\nconst url = allInputs.length > 1 ? allInputs[1].json.url : \"URL não definida\";\nconst itemsDesejados = allInputs.length > 2 ? allInputs[2].json.itemsDesejados : [];\n\n// --- FUNÇÕES DE FORMATAÇÃO ---\n\nconst formatItemsDesejados = (items = []) => {\n  if (!items || items.length === 0) return \"  (Nenhum item específico listado)\";\n  // Ajuste: verifica se é objeto ou string simples\n  return items.map((item, i) => `  ${i + 1}. ${item.itemDesejado || item}`).join('\\n');\n};\n\nconst formatComprasDeHoje = (compras = []) => {\n  if (!compras || compras.length === 0) return \"  (Nenhuma oferta encontrada)\";\n\n  return compras.map((item, i) => {\n    // Formatação básica de preço para BRL\n    let precoFormatado = \"Preço não informado\";\n    if (item.price) {\n        // Tenta formatar, se der erro usa o numero cru\n        try {\n            precoFormatado = `R$ ${item.price.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;\n        } catch (e) {\n            precoFormatado = `R$ ${item.price}`;\n        }\n    }\n\n    return `  ${i + 1}. ${item.title}\n      - Loja: ${item.store}\n      - Preço: ${precoFormatado}\n      - Link: ${item.url}\n      - Imagem: ${item.image}`;\n  }).join('\\n\\n');\n};\n\n// --- MONTAGEM DO TEXTO FINAL ---\n\nconst texto = `Url Origem:\\n${url}\\n\\nItens desejados:\\n${formatItemsDesejados(itemsDesejados)}\\n\\nOfertas encontradas:\\n${formatComprasDeHoje(comprasDeHoje)}`;\n\nreturn [\n  {\n    json: {\n      texto\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1248,
+        336
+      ],
+      "id": "0677bb6d-34f6-4d2a-99f6-b607c92f065f",
+      "name": "JSON -> Texto"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 8
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        96,
+        400
+      ],
+      "id": "b42d2d4d-a922-43d6-a2e1-534d361e9beb",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "fc695deb-5332-499c-8151-a365c21cab03",
+              "leftValue": "={{ $json.content.parts[0].text }}",
+              "rightValue": "Nenhum dos itens disponíveis hoje corresponde aos itens desejados",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1728,
+        336
+      ],
+      "id": "8bfe7206-2d11-4235-900c-54cdffd0f83e",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "jsCode": "return {url: \"https://www.pelando.com.br/recentes\"};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        336,
+        336
+      ],
+      "id": "62cdfde4-883f-4a4e-853e-7999218742bb",
+      "name": "URL Pelando"
+    },
+    {
+      "parameters": {},
+      "type": "@devlikeapro/n8n-nodes-waha.WAHA",
+      "typeVersion": 202502,
+      "position": [
+        2096,
+        448
+      ],
+      "id": "63c1ab3e-1254-46fb-875d-70e97d5a2ea5",
+      "name": "Send a text message",
+      "credentials": {}
+    },
+    {
+      "parameters": {},
+      "type": "@devlikeapro/n8n-nodes-waha.WAHA",
+      "typeVersion": 202502,
+      "position": [
+        1936,
+        144
+      ],
+      "id": "05be159c-2ba8-46a2-b06a-c9a9102adb06",
+      "name": "Get all contacts",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "1f1e5edf-4fb8-4818-95d2-050591a1f94e",
+              "leftValue": "={{ $json.isMe }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        2096,
+        144
+      ],
+      "id": "a9d542f3-7a19-4357-a23f-86d39460c54d",
+      "name": "Get My Number"
+    }
+  ],
+  "connections": {
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Extrai Produtos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many tasks": {
+      "main": [
+        [
+          {
+            "node": "Extrai itens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "JSON -> Texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrai Produtos": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrai itens": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "JSON -> Texto": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "URL Pelando",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get many tasks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "URL Pelando": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Get all contacts": {
+      "main": [
+        [
+          {
+            "node": "Get My Number",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "da0702cc-b245-4e19-9a47-734a41c037f5",
+  "activeVersionId": null,
+  "versionCounter": 1,
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-01-10T14:23:16.633Z",
+      "createdAt": "2026-01-10T14:23:16.633Z",
+      "role": "workflow:owner",
+      "workflowId": "d-guKGRBT_MGbdK4UVupC",
+      "projectId": "ZOOio0AGC48cUKE7",
+      "project": {
+        "updatedAt": "2026-01-10T12:43:14.203Z",
+        "createdAt": "2026-01-10T12:33:00.833Z",
+        "id": "ZOOio0AGC48cUKE7",
+        "name": "Thiago Saquette <thiago.saquettepj@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "8265ce84-06dc-4f87-9444-dd6220b39adc"
+      }
+    }
+  ]
+}

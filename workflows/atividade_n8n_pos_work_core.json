@@ -1,0 +1,593 @@
+{
+  "updatedAt": "2026-02-16T22:47:13.277Z",
+  "createdAt": "2026-02-16T18:28:37.557Z",
+  "id": "WaCpQl1V7GiC5Fh9gwz0X",
+  "name": "atividade_n8n_pos_work_core",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "const inputText = $input.first().json.message?.text || '';\n\nfunction validateCityUF(text) {\n  const at = new Date().toISOString();\n  const fallback = (msg) => ({ errorMessage: msg, city: null, uf: null, at });\n\n  if (!text || typeof text !== 'string') \n    return fallback('🔴 Mensagem de texto não encontrada!');\n\n  const match = text.trim().match(/^(.+?)\\s*,\\s*([A-Z]{2})\\.?$/i);\n\n  if (!match) \n    return fallback('❌ Cidade não encontrada. Use o formato Cidade,UF (ex.: São Paulo,SP).');\n\n  const city = match[1].trim();\n  const uf = match[2].toUpperCase();\n\n  return (!city || uf.length !== 2) \n    ? fallback('❌ Cidade não encontrada. Use o formato Cidade,UF (ex.: São Paulo,SP).')\n    : { city, uf, at };\n}\n\ntry {\n  return { queue: validateCityUF(inputText) };\n} catch (e) {\n  return { queue: { errorMessage: '🔴 Erro inesperado!', city: null, uf: null, at: new Date().toISOString() } };\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        16,
+        -336
+      ],
+      "id": "1d865b6f-0de4-41a9-924c-bc9556ecf1df",
+      "name": "validate_and_transform"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "a6eb2612-a427-4a8b-b865-3ee8efe1176f",
+              "leftValue": "={{ $json.queue.errorMessage }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        224,
+        -336
+      ],
+      "id": "6dccc5e3-cc16-4422-90b4-4f87180df6a8",
+      "name": "has_error"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -224,
+        -336
+      ],
+      "id": "56390220-f8a0-41ea-b32c-199a10f492a0",
+      "name": "message_trigger",
+      "webhookId": "63b6ce5d-5ece-495b-a722-79672c30e1c1",
+      "credentials": {
+        "telegramApi": {
+          "id": "rUzBztp5Bs6Z0mRi",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "http://api.openweathermap.org/geo/1.0/direct",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "q",
+              "value": "={{ $json.queue.city }},{{ $json.queue.uf }},BR"
+            },
+            {
+              "name": "limit",
+              "value": "1"
+            },
+            {
+              "name": "appid",
+              "value": "={{ $json.apiKey }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        640,
+        -240
+      ],
+      "id": "64303fa9-28fd-4b86-bca3-a31d221ead84",
+      "name": "get_geolocation_by_city_and_uf",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c7b78281-9cbb-469f-8d6b-3ecbc5261171",
+              "leftValue": "={{ $json.lat }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "6e428d34-a205-45d6-8009-2806ba282e7c",
+              "leftValue": "={{ $json.lon }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "06f9ecfe-7336-4ce3-b2b8-7dc464f9dc51",
+              "leftValue": "={{ $('validate_and_transform').item.json.queue.city }}",
+              "rightValue": "={{ $json.name }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "2df4bb29-d0d6-40a2-9ad1-165c903a6525",
+              "leftValue": "={{ $json.country }}",
+              "rightValue": "BR",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        864,
+        -240
+      ],
+      "id": "5f639d46-da8c-4c79-88d6-c85cdec7ba3f",
+      "name": "check_the_results"
+    },
+    {
+      "parameters": {
+        "errorMessage": "={{ $json.queue.errorMessage }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        432,
+        -432
+      ],
+      "id": "d68aadf6-3abd-452d-831d-509812aedd1b",
+      "name": "throw_validation_error"
+    },
+    {
+      "parameters": {
+        "errorMessage": "=❌ Cidade não encontrada. Use o formato Cidade,UF (ex.: São Paulo,SP)."
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        1088,
+        0
+      ],
+      "id": "f2365ecc-69d5-45e8-9c5e-585c26637980",
+      "name": "throw_geolocation_http_error"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('message_trigger').item.json.message.chat.id }}",
+        "text": "❌ Cidade não encontrada. Use o formato Cidade,UF (ex.: São Paulo,SP).",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        432,
+        -592
+      ],
+      "id": "e78170e2-42f9-49c6-a57c-4425e7d86710",
+      "name": "message_with_error",
+      "webhookId": "8ecfa472-bb52-4140-8b26-ecf00b30c355",
+      "credentials": {
+        "telegramApi": {
+          "id": "rUzBztp5Bs6Z0mRi",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('message_trigger').item.json.message.chat.id }}",
+        "text": "❌ Cidade não encontrada. Use o formato Cidade,UF (ex.: São Paulo,SP).",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1088,
+        -160
+      ],
+      "id": "f52f1e0c-cb03-4532-ba7d-b5d6ca263009",
+      "name": "message_with_error_2",
+      "webhookId": "8ecfa472-bb52-4140-8b26-ecf00b30c355",
+      "credentials": {
+        "telegramApi": {
+          "id": "rUzBztp5Bs6Z0mRi",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.openweathermap.org/data/2.5/weather",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "lat",
+              "value": "={{ $json.lat }}"
+            },
+            {
+              "name": "lon",
+              "value": "={{ $json.lon }}"
+            },
+            {
+              "name": "appid",
+              "value": "={{ $('my_api_key_value').item.json.apiKey }}"
+            },
+            {
+              "name": "units",
+              "value": "metric"
+            },
+            {
+              "name": "lang",
+              "value": "pt_br"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1088,
+        -336
+      ],
+      "id": "b8e157bd-bcbf-43fb-9414-6584c20e0cae",
+      "name": "get_weather_by_lat_lon",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2f1cbce5-0c03-4c36-93cd-40a7dbf1c78b",
+              "name": "apiKey",
+              "value": "={{ $env['OPENWEATHER_API_KEY'] }}",
+              "type": "string"
+            },
+            {
+              "id": "81d2eb3a-1b2a-42aa-9524-8950234b45bf",
+              "name": "queue",
+              "value": "={{ $json.queue }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        432,
+        -240
+      ],
+      "id": "eef12cbf-5b04-48e6-acbd-b2d36a4a3d1d",
+      "name": "my_api_key_value"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('message_trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.text_to_user }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1504,
+        -336
+      ],
+      "id": "152d402b-482d-451e-a2a5-e034c1ebe607",
+      "name": "message_with_success",
+      "webhookId": "8ecfa472-bb52-4140-8b26-ecf00b30c355",
+      "credentials": {
+        "telegramApi": {
+          "id": "rUzBztp5Bs6Z0mRi",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "{{\n  const temp = $input.first().json.main.temp;\n  let icon = '⛅';\n\n  if (temp >= 35) icon = '🌪️';      // Muito quente / Extremo\n  else if (temp >= 30) icon = '🌤️'; // Quente\n  else if (temp >= 25) icon = '⛅'; // Agradável\n  else if (temp >= 20) icon = '🌥️'; // Nublado leve\n  else if (temp >= 15) icon = '🌦️'; // Fresco / Chuva leve\n  else if (temp >= 10) icon = '🌧️'; // Frio com chuva\n  else if (temp >= 5) icon = '🌨️';  // Muito frio\n  else icon = '🌩️';    \n  \n  const text_with_icon = `${icon} A temperatura em ${$node[\"validate_and_transform\"].json.queue.city} é de ${temp.toFixed(0)}°C.`\n\n  return { text_to_user: text_with_icon};\n}}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1296,
+        -336
+      ],
+      "id": "d6f63707-b1bf-487a-9826-9779df053b4f",
+      "name": "transform_success_response"
+    }
+  ],
+  "connections": {
+    "validate_and_transform": {
+      "main": [
+        [
+          {
+            "node": "has_error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "message_trigger": {
+      "main": [
+        [
+          {
+            "node": "validate_and_transform",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "has_error": {
+      "main": [
+        [
+          {
+            "node": "throw_validation_error",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "message_with_error",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "my_api_key_value",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_geolocation_by_city_and_uf": {
+      "main": [
+        [
+          {
+            "node": "check_the_results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check_the_results": {
+      "main": [
+        [
+          {
+            "node": "get_weather_by_lat_lon",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "throw_geolocation_http_error",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "message_with_error_2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "my_api_key_value": {
+      "main": [
+        [
+          {
+            "node": "get_geolocation_by_city_and_uf",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_weather_by_lat_lon": {
+      "main": [
+        [
+          {
+            "node": "transform_success_response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "transform_success_response": {
+      "main": [
+        [
+          {
+            "node": "message_with_success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "Yh9u38xKkqRp0SXEBp-Vj"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "get_weather_by_lat_lon": [
+      {
+        "json": {
+          "coord": {
+            "lon": -49.2733,
+            "lat": -25.4284
+          },
+          "weather": [
+            {
+              "id": 211,
+              "main": "Thunderstorm",
+              "description": "trovoadas",
+              "icon": "11d"
+            },
+            {
+              "id": 501,
+              "main": "Rain",
+              "description": "chuva moderada",
+              "icon": "10d"
+            }
+          ],
+          "base": "stations",
+          "main": {
+            "temp": 22,
+            "feels_like": 22.63,
+            "temp_min": 21.69,
+            "temp_max": 23.94,
+            "pressure": 1016,
+            "humidity": 91,
+            "sea_level": 1016,
+            "grnd_level": 910
+          },
+          "visibility": 10000,
+          "wind": {
+            "speed": 6.69,
+            "deg": 220
+          },
+          "rain": {
+            "1h": 1.54
+          },
+          "clouds": {
+            "all": 75
+          },
+          "dt": 1771278099,
+          "sys": {
+            "type": 2,
+            "id": 2073418,
+            "country": "BR",
+            "sunrise": 1771232622,
+            "sunset": 1771279135
+          },
+          "timezone": -10800,
+          "id": 3464975,
+          "name": "Curitiba",
+          "cod": 200
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "message_trigger": [
+      {
+        "json": {
+          "update_id": 540633937,
+          "message": {
+            "message_id": 33,
+            "from": {
+              "id": 6668426258,
+              "is_bot": false,
+              "first_name": "Thiago S.",
+              "language_code": "pt-br"
+            },
+            "chat": {
+              "id": 6668426258,
+              "first_name": "Thiago S.",
+              "type": "private"
+            },
+            "date": 1771281956,
+            "text": "Urupeme, SC"
+          }
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "versionId": "248a53f0-7d38-4c83-ab9f-3d028d244ee8",
+  "activeVersionId": "248a53f0-7d38-4c83-ab9f-3d028d244ee8",
+  "versionCounter": 353,
+  "triggerCount": 1,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-02-16T18:28:37.557Z",
+      "createdAt": "2026-02-16T18:28:37.557Z",
+      "role": "workflow:owner",
+      "workflowId": "WaCpQl1V7GiC5Fh9gwz0X",
+      "projectId": "i95oXQYAD5RP6Jwj",
+      "project": {
+        "updatedAt": "2026-01-24T11:21:28.107Z",
+        "createdAt": "2026-01-24T11:13:34.308Z",
+        "id": "i95oXQYAD5RP6Jwj",
+        "name": "Thiago  Saquette <thigo.saquette@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "71cb6906-aa6d-46d6-9d5a-fc45006b4b0b"
+      }
+    }
+  ]
+}

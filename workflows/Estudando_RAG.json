@@ -1,0 +1,1558 @@
+{
+  "updatedAt": "2026-01-10T19:55:26.214Z",
+  "createdAt": "2026-01-10T18:59:29.816Z",
+  "id": "l3__v1QpobGlKaN7pdnlE",
+  "name": "Estudando RAG",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "content": "```\nConsultando sem RAG?\n```\n\n### Benefícios\n- Sem banco externos\n- Mínima complexidade de configuração inicial\n- Menos conhecimento envolvido\n\n\n### Desafios\n- Contexto grande\n- Gasto com tokens\n- Perda de contexto/alucinações\n",
+        "height": 760,
+        "width": 400,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2384,
+        944
+      ],
+      "id": "adf3dfa0-e4ef-4c17-963b-5c958a2facd9",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 760,
+        "width": 980,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1968,
+        944
+      ],
+      "id": "4bf70f35-d995-46df-9953-31ee0ecfb4bd",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=Utilize a tool PosGraduacaoFaculdadeRocketseat para obter qualquer informação sobre a pós graduação da Faculdade de Tecnologia da Rocketseat.\n\nSe o cliente fizer mais de uma pergunta, divida as perguntas e utilize a tool de maneira individual para cada pergunta, colhendo apenas o necessário para oferecer o suporte.\n\nNunca responda nada que não estiver como informações nas suas tools. \n\nCaso a informação não seja recuperada, apenas responda \"Não tenho essa informação\"."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        -1664,
+        1184
+      ],
+      "id": "61f29b7c-8cb8-4428-a299-94be6a5060a9",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {
+          "temperature": 0
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -1712,
+        1424
+      ],
+      "id": "c4b6e622-902b-42fe-9e9b-865806568d23",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "QDiZRNSyUnKpFJoY",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Tool contendo informações sobre a pó graduação da Faculdade de Tecnologia da Rocketseat",
+        "operation": "get",
+        "documentURL": "1ajzNv4S-mWl0bGCDWXzh4K-jtUUsLyaN6Mog4JxZe5o"
+      },
+      "type": "n8n-nodes-base.googleDocsTool",
+      "typeVersion": 2,
+      "position": [
+        -1328,
+        1392
+      ],
+      "id": "d6f13ef1-8a7c-449c-924c-f58b8ab5dec6",
+      "name": "PosGraduacaoFaculdadeRocketseat"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "documentURL": "1ajzNv4S-mWl0bGCDWXzh4K-jtUUsLyaN6Mog4JxZe5o"
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        -1296,
+        1088
+      ],
+      "id": "e2d9fc10-e576-44b3-8d46-3149047a9400",
+      "name": "Google Docs"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        2768,
+        384
+      ],
+      "id": "3ce716d6-e299-4cb1-8d01-d7f5c222ac28",
+      "name": "When chat message received",
+      "webhookId": "d0c64807-8b9f-47bc-82e8-56ffdc6a4309"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -304,
+        368
+      ],
+      "id": "9c41869b-938c-43b8-b2aa-af8f1e8b691f",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "content": "## RAG\nRAG (Retrieval-Augmented Generation) é uma técnica que melhora a qualidade das respostas de modelos de IA generativa, como LLMs.\n\n### O que é \nÉ uma abordagem que combina a recuperação de informações com a geração de texto. Em vez de depender apenas dos dados com os quais foi treinado, o modelo busca informações relevantes de fontes externas.\n\n### Benefícios \nPermite que os modelos forneçam respostas mais precisas, atualizadas e relevantes, utilizando bases de conhecimento específicas e autoritárias. Também pode facilitar a inclusão de citações.\n\n### Como funciona\n- O usuário faz uma pergunta (prompt).\n- Um sistema de recuperação busca dados relevantes em uma base de conhecimento externa.\n- Essa informação recuperada é fornecida ao modelo de IA generativa.\n- O modelo usa essa informação para gerar a resposta final.\n\n\n### Fontes:\nhttps://www.ibm.com/think/topics/retrieval-augmented-generation\nhttps://blogs.nvidia.com/blog/what-is-retrieval-augmented-generation/\nhttps://aws.amazon.com/what-is/retrieval-augmented-generation/",
+        "height": 760,
+        "width": 500,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -880,
+        928
+      ],
+      "id": "b3b7376a-21c7-47b9-bfa9-bad192c7ec2f",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "clearStore": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
+      "typeVersion": 1.1,
+      "position": [
+        192,
+        368
+      ],
+      "id": "dcc08918-88ab-47ee-bf2b-cf4daf993478",
+      "name": "Simple Vector Store"
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "loader": "pdfLoader",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        272,
+        560
+      ],
+      "id": "209117c3-fd96-4d2c-b173-ec27d093eaa2",
+      "name": "Default Data Loader1"
+    },
+    {
+      "parameters": {
+        "chunkSize": 300,
+        "chunkOverlap": 30,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        240,
+        752
+      ],
+      "id": "014c8b2a-71d1-4c16-a157-9eb888071114",
+      "name": "Recursive Character Text Splitter1"
+    },
+    {
+      "parameters": {
+        "url": "https://arxiv.org/pdf/2412.02563?",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d1116caf-3201-4cdc-bbe5-432c2ad1a34e",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "content": "### Fundamentos de inserção de dados\n```\nAdicionando um determinado documento à base de dados em memória\n```",
+        "height": 760,
+        "width": 980,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -368,
+        160
+      ],
+      "id": "a49cb6db-7606-4023-abc0-70958429b946",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "```\nHTTP Request\n```\n- Requisição para servidor externo\n- Protocolo de comunicação web\n- GET/POST métodos principais\n- Transfere dados entre sistemas\n\n```\nSimple Vector Store\n```\n- Armazena embeddings em memória\n- Base de dados vetorial\n- Busca por similaridade\n- Recuperação rápida de documentos\n\n```\nEmbedDocument\n```\n- Transforma texto em vetores\n- Representação numérica do conteúdo\n- Prepara para armazenamento vetorial\n- Converte linguagem natural\n```\nEmbeddings\n```\n- API de vetorização\n- Modelo de linguagem avançado\n- Gera representações semânticas\n- Alta qualidade de embedding",
+        "height": 760,
+        "width": 400,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        624,
+        928
+      ],
+      "id": "adae3a4e-1090-4ead-9807-7372da8d4ef5",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "```\nDefault Data Loader\n```\n- Carrega documentos do sistema\n- Lê diferentes formatos arquivo\n- Prepara dados para processamento\n- Interface padrão de entrada\n\n```\nText Splitter\n```\n- Divide textos em chunks\n- Mantém contexto relevante\n- Otimiza tamanho dos fragmentos\n- Melhora qualidade da busca\n\n```\nRecursive Character Text Splitter\n```\n- Divisão hierárquica inteligente\n- Preserva estrutura do documento\n- Quebra por caracteres recursivamente\n- Mantém coerência semântica\n",
+        "height": 760,
+        "width": 400,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        624,
+        160
+      ],
+      "id": "b7a97ec3-56fc-4e20-a841-d8dac549043e",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "content": "### Fundamentos de busca semântica\n```\nRecuperando dados\n```",
+        "height": 760,
+        "width": 980,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -368,
+        928
+      ],
+      "id": "82e271fd-594c-40f1-8d41-77145f3f027a",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "options": {
+          "temperature": 0
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        1360
+      ],
+      "id": "8082cc61-02bb-4466-ad7f-de0423378954",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "QDiZRNSyUnKpFJoY",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "pos_ftr",
+        "toolDescription": "Informações sobre a Pós Graduação da Faculdade de Tecnologia Rocketseat",
+        "topK": 1
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
+      "typeVersion": 1.1,
+      "position": [
+        128,
+        1360
+      ],
+      "id": "e707eecb-c65d-403e-95cd-a06262d6d463",
+      "name": "Simple Vector Store1"
+    },
+    {
+      "parameters": {},
+      "id": "0fe51e74-f16d-4ae5-98bb-ed1f699716fc",
+      "name": "Embeddings Google Gemini",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "position": [
+        64,
+        640
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "googlePalmApi": {
+          "id": "QDiZRNSyUnKpFJoY",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "ca7c0ee1-96e6-4209-85bf-17ba672d1c8e",
+      "name": "Embeddings Google Gemini (retrieval)",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "position": [
+        80,
+        1536
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "googlePalmApi": {
+          "id": "QDiZRNSyUnKpFJoY",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "=1ajzNv4S-mWl0bGCDWXzh4K-jtUUsLyaN6Mog4JxZe5o",
+          "mode": "id"
+        },
+        "options": {
+          "googleFileConversion": {
+            "conversion": {
+              "docsToFormat": "application/pdf",
+              "drawingsToFormat": "application/pdf",
+              "slidesToFormat": "application/pdf",
+              "sheetsToFormat": "application/pdf"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -64,
+        368
+      ],
+      "id": "b6abdb7b-e829-45c6-b68f-9919cdcf08b6",
+      "name": "Google Drive",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "Qq1NIqVAJBHD4nyu",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Você é especialista em responder perguntas sobre a Pós Graduação da Faculdade de Tecnologia da Rocketseat\n\nNunca responda nada que não estiver como informações nas suas tools. \n\nCaso a informação não seja recuperada, apenas responda \"Não tenho essa informação\"."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        -32,
+        1152
+      ],
+      "id": "713d4efa-9596-4abf-9bf0-65af454d3a0e",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "content": "```\nRecuperando dados\n```",
+        "height": 872,
+        "width": 980,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2688,
+        160
+      ],
+      "id": "48dcb9f8-d207-401e-a6d6-8c10ba4e3260",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Você é especialista em responder perguntas sobre a Pós Graduação da Faculdade de Tecnologia da Rocketseat\n\nObrigatoriamente busque informações na sua tool `PosGraduacao`\n\nNunca responda nada que não estiver como informações nas suas tool. \n\nCaso a informação não seja recuperada, apenas responda \"Não tenho essa informação\"."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        2992,
+        416
+      ],
+      "id": "a8658bf7-f61f-4474-942c-0b4eeb5cf3bd",
+      "name": "AI Agent2"
+    },
+    {
+      "parameters": {
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2928,
+        640
+      ],
+      "id": "91ec761b-5a74-4a74-b5cc-1b29910ed78b",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "QDiZRNSyUnKpFJoY",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "\n### Objetivo\nMonitorar uma pasta no Google Drive, sempre que houver adição ou alteração em arquivos, criando embeddings para salvar dados num banco Postgres e recuperar informações para a resposta melhorada da IA (RAG)\n\n\n### Credenciais\n- Google Drive\n- Postgres\n\n\n```\nGoogle Drive\n```\n- Armazenamento em nuvem Google\n- Download automático de arquivos\n- Integração com APIs Google\n- Acesso remoto a documentos\n\n```\nPostgres Vector Store\n```\n- Banco vetorial PostgreSQL\n- Armazenamento persistente de embeddings\n- Escalabilidade para produção\n- Busca vetorial otimizada",
+        "height": 760,
+        "width": 500,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1168,
+        160
+      ],
+      "id": "c62d7f8f-ebe2-44cb-a11e-a55043cee0be",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "separator": "—",
+        "chunkSize": 100,
+        "chunkOverlap": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        2496,
+        736
+      ],
+      "id": "c772e333-c692-400b-a1ca-410fbe8b01c2",
+      "name": "Character Text Splitter"
+    },
+    {
+      "parameters": {
+        "content": "```\nAdicionando um determinado documento à base de dados\n```",
+        "height": 760,
+        "width": 980,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        160
+      ],
+      "id": "2e3a97fd-ea3d-4dfc-956d-07202a5c1ca4",
+      "name": "Sticky Note15"
+    },
+    {
+      "parameters": {
+        "content": "```\nAtualiza um determinado documento na base de dados\n```\n\n- set file_id as metadata in data loader\n- delete where file_id match the updated file",
+        "height": 420,
+        "width": 980,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        960
+      ],
+      "id": "e50a06ed-b7e8-4f90-ab29-eab2bcfe05f2",
+      "name": "Sticky Note16"
+    },
+    {
+      "parameters": {
+        "content": "```\nRemovendo documentos de uma base\n```",
+        "height": 440,
+        "width": 980,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        1440
+      ],
+      "id": "c6201f63-5b2f-4472-802a-4c67929005a4",
+      "name": "Sticky Note17"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1952,
+        1600
+      ],
+      "id": "f12c3eb1-fc9f-4db9-8e4a-a361a7e28c60",
+      "name": "Loop Over Items1"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": "sdr_ftr",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "typeVersion": 1.2,
+      "position": [
+        2240,
+        352
+      ],
+      "id": "018858b6-fb6c-4713-b377-1e3dad33966f",
+      "name": "Postgres PGVector Store",
+      "credentials": {
+        "postgres": {
+          "id": "t81sVHfM5hIe9XSI",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT * FROM sdr_ftr",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1728,
+        592
+      ],
+      "id": "f8743f1a-2d25-4222-82b2-62af3476e1c6",
+      "name": "AllResults",
+      "credentials": {
+        "postgres": {
+          "id": "t81sVHfM5hIe9XSI",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "DELETE FROM sdr_ftr\nWHERE metadata->>'file_id' ~ $1;",
+        "options": {
+          "queryReplacement": "='.*{{$json.id}}'"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2080,
+        1200
+      ],
+      "id": "71eff7fb-208d-4bbd-99d6-72d994cc58d6",
+      "name": "RemoveData",
+      "credentials": {
+        "postgres": {
+          "id": "t81sVHfM5hIe9XSI",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "DELETE FROM sdr_ftr\nWHERE metadata->>'file_id' ~ $1;",
+        "options": {
+          "queryReplacement": "='.*{{$json.id}}'"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2208,
+        1664
+      ],
+      "id": "6e82560b-60bc-4480-b4dc-635a39421586",
+      "name": "DeleteData",
+      "credentials": {
+        "postgres": {
+          "id": "t81sVHfM5hIe9XSI",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        2032,
+        352
+      ],
+      "id": "23844be6-9a0b-40dc-8a86-8b3eb3b6a6da",
+      "name": "Google Drive1",
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 3000,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "Qq1NIqVAJBHD4nyu",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "loader": "docxLoader",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "file_id",
+                "value": "={{ $json.id }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        2352,
+        544
+      ],
+      "id": "e2eda259-0069-4354-ad9d-7fbf7cad34bd",
+      "name": "Default Data Loader2"
+    },
+    {
+      "parameters": {
+        "chunkSize": 600,
+        "chunkOverlap": 100,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        2304,
+        752
+      ],
+      "id": "0d4e98d4-0967-4300-b180-95015a23dd4a",
+      "name": "Recursive Character Text Splitter2"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1gio8w60QvpjFw4c5bAy8gG4WGAYXsQ0X",
+          "mode": "list",
+          "cachedResultName": "N8N-aula",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1gio8w60QvpjFw4c5bAy8gG4WGAYXsQ0X"
+        },
+        "event": "fileCreated",
+        "options": {
+          "fileType": "all"
+        }
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        1744,
+        352
+      ],
+      "id": "42ea15c1-bcde-4372-bb95-e83c7f6ba794",
+      "name": "FileCreated1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "Qq1NIqVAJBHD4nyu",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1RxceLxln56zp8g5kCTnxCUbSUqDqW6X3",
+          "mode": "list",
+          "cachedResultName": "Mentoria",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1RxceLxln56zp8g5kCTnxCUbSUqDqW6X3"
+        },
+        "event": "fileUpdated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        1744,
+        1200
+      ],
+      "id": "7259a1c6-8dc0-42bd-ae75-c28b588dc15a",
+      "name": "FileUpdated1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "Qq1NIqVAJBHD4nyu",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1MJ-lgO5WNO2_9RVtnLnIoCtOq-qozIpF",
+          "mode": "list",
+          "cachedResultName": "Lixo",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1MJ-lgO5WNO2_9RVtnLnIoCtOq-qozIpF"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        1744,
+        1600
+      ],
+      "id": "1f9b92ef-9dcf-4ee5-b11b-5a9e97656a95",
+      "name": "FileDeleted1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "Qq1NIqVAJBHD4nyu",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "deleteFile",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $('Loop Over Items1').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        2400,
+        1664
+      ],
+      "id": "d1b23fe1-4660-4dd8-8400-6a87f3d1c609",
+      "name": "DeleteFromDrive1",
+      "executeOnce": true,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "Qq1NIqVAJBHD4nyu",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "42e20fae-e66a-4441-a78e-b58e32df889f",
+              "name": "id",
+              "value": "={{ $('FileUpdated1').item.json.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2384,
+        1200
+      ],
+      "id": "35c0b3c8-febd-4b2f-a086-64b4ece82864",
+      "name": "Edit Fields1",
+      "executeOnce": true
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        3136,
+        784
+      ],
+      "id": "37dfced9-3513-418d-a4cf-28dc33ff49fa",
+      "name": "Embeddings Google Gemini1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "QDiZRNSyUnKpFJoY",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2144,
+        592
+      ],
+      "id": "069bdef3-0094-47d2-96a3-e8aca6631059",
+      "name": "Embeddings Google Gemini2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "QDiZRNSyUnKpFJoY",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Recupera informações sobre a Pós Graduação da Faculdade de Tecnologia da Rocketseat",
+        "tableName": "sdr_ftr",
+        "topK": 1,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "typeVersion": 1.3,
+      "position": [
+        3216,
+        624
+      ],
+      "id": "f49ff0f9-3ee2-4271-ae7f-a12036b37277",
+      "name": "PosGraduacao",
+      "credentials": {
+        "postgres": {
+          "id": "t81sVHfM5hIe9XSI",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "DELETE FROM sdr_ftr",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1728,
+        768
+      ],
+      "id": "946d683d-c512-459d-a1e9-1ae78f07565e",
+      "name": "DeleteVectors",
+      "credentials": {
+        "postgres": {
+          "id": "t81sVHfM5hIe9XSI",
+          "name": "Postgres account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PosGraduacaoFaculdadeRocketseat": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader1": {
+      "ai_document": [
+        [
+          {
+            "node": "Simple Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter1": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader1",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Vector Store1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Google Gemini": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Simple Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Google Gemini (retrieval)": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Simple Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive": {
+      "main": [
+        [
+          {
+            "node": "Simple Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Character Text Splitter": {
+      "ai_textSplitter": [
+        []
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [],
+        [
+          {
+            "node": "DeleteData",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RemoveData": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeleteData": {
+      "main": [
+        [
+          {
+            "node": "DeleteFromDrive1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive1": {
+      "main": [
+        [
+          {
+            "node": "Postgres PGVector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader2": {
+      "ai_document": [
+        [
+          {
+            "node": "Postgres PGVector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FileCreated1": {
+      "main": [
+        [
+          {
+            "node": "Google Drive1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FileUpdated1": {
+      "main": [
+        [
+          {
+            "node": "RemoveData",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FileDeleted1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Google Drive1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Google Gemini1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "PosGraduacao",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Google Gemini2": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Postgres PGVector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PosGraduacao": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter2": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader2",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {
+    "Google Docs": [
+      {
+        "json": {
+          "documentId": "1ajzNv4S-mWl0bGCDWXzh4K-jtUUsLyaN6Mog4JxZe5o",
+          "content": "Domine a inteligência artificial generativa e a automação de processos para impulsionar sua carreira em tecnologia. Aprenda a aplicar IA em soluções reais, usando as principais ferramentas e tecnologias do mercado.\n\nNível: Intermediário a Avançado\n\nDuração: 18 meses Conclua em até 12\n\nInício da turma: Início imediato\n\nModalidade: Ensino a Distância\n\nDISPONÍVEL TAMBÉM NO Formato de Extensão\n\nGARANTIR OFERTA EXCLUSIVA: R$ 1.000 de desconto\n\nAPRENDIZADO COMPLETO: agentes de automação, CHATGPT, python, n8n, banco de dados, langchain, crewai, sql\n\n\n# INVESTIMENTO\n\n## Seu caminho para dominar IA e automatizar processos\n\n### Oferta por tempo limitado!\n\nMatricule-se na pós-graduação em até\n\n21x R$ 445,50 (com juros)\n\nou em 12x sem juros\n\n\nVeja tudo que você vai levar:\n\n- 18 meses de acesso a pós-graduação IA e Automação\n- Acesso a comunidade exclusiva\n- Encontros síncronos (ao vivo) com educadores\n- Suporte para sua jornada\n- Carteirinha de estudante\n- Certificação reconhecida pelo MEC\n\n3 bônus:\n\n- Desconto de R$ 1.000 na matrícula\n- 18 meses de acesso à Rocketseat ONE (R$ 3.295,44)\n- Combo de cursos e formações de IA\n\n#### Tudo isso custaria R$ 21.542,30\n\nHoje por apenas R$ 7500\n\nfaça sua matricula e ganhe\n\n## Bônus que você vai receber ao se matricular:\n\nMatricule-se agora\nVAGAS LIMITADAS!\n\n### Bolsa de estudos Rocketseat ONE\n\nAcesso a todas as formações, cursos extras e todos os benefícios da assinatura, enquanto seu período de acesso à pós-graduação estiver ativo.\n\n### Combo de cursos e formações IA\n\nAprenda a criar chatbots, automatizações, usar IA com Node.js, dominar engenharia de prompt e desenvolver modelos com aplicações reais!\n\n### Camiseta de presente\n\nReceba em casa uma camiseta exclusiva para alunos da faculdade! (Envio realizado apeas para endereços no Brasil, após 45 dias da matrícula)\n\nCONTEÚDO DA MENTORIA\n\n## Cursos e formações em IA\n\ngarantir bônus\n\n- Formação em IA28 horas • + de 150 aulas • 4 desafios práticos • Certificado Aprenda a desenvolver soluções inovadoras com IA, incluindo chatbots, fine-tuning e RAG. Explore ferramentas como Watson Assistant, Dialog Flow e GPT para projetar e otimizar aplicações inteligentes com foco na prática.\n- Formação Desenvolvimento de IA com Fluvio Mascara (Foursys)130 horas | + de 520 aulas | 17 desafios e 15 testes práticos | Certificado Domine os fundamentos essenciais de estatística, análise de dados e aprendizado de máquina. Desenvolva modelos com diversos algoritmos, desde o tratamento dos dados até a entrega dos resultados, aplicando tudo em casos reais.\n- IA + Node.js: Marketplace Inteligente com Isaac Batista 18 horas | + de 50 aulas | 2 testes práticos | Certificado Aprenda a usar a API da OpenAI criando o Cart AI, um marketplace inteligente, explorando geração de texto, estruturação de dados com JSON e Function Calling, além de ferramentas como embeddings, File Search e processamento em lote.\n- Introdução a automação com N8N com Enzzo Panarotto 5 horas | + de 15 aulas | 6 testes práticos | Certificado Domine o futuro das automações com o curso de Automações com n8n! Aprenda a criar fluxos inteligentes que conectam suas ferramentas favoritas, automatizam tarefas repetitivas e aumentam sua produtividade. Sem complicação e com uma abordagem prática, você vai transformar seu dia a dia, ganhando tempo para focar no que realmente importa.\n- Engenharia de Prompt com Rodrigo Gonçalves 2 horas | + 18 aulas | 1 teste prático | Certificado Domine a arte de conversar com a IA! Aprenda a criar prompts eficientes usando técnicas como Zero-Shot, Few-Shot, Cadeia de Pensamento, empilhamento de prompts, ajuste de temperatura e muito mais. Com uma abordagem prática e direta, o curso ensina como estruturar perguntas, refinar interações e comparar diferentes estratégias para extrair o melhor dos modelos de linguagem.\n\n\n# Programa da pós\n\n## Dos fundamentos à especialização, veja o que você vai aprender\n\nNível do conteúdo: Intermediário\n\nPré-requisito: Graduação em qualquer área\n\nCarga horária: 360h com conteúdos complementares\n\n\nProfessores\n\n### Mayk Brito\n\nCCO na Rocketseat | Educador| Programador há +16 anos\n\n### Rodrigo Gonçalves\n\nHead de Educação e Educator na Rocketseat\n\n### Carlos Araújo Viana\n\nAnalyste Programmeur BI chez Phoenixx Web Mobile Solutions\n\n### Cesar Augusto Michelin\n\nFounder na Aprender Destrava | Designer de Aprendizagem\n\n### Paulo Victor E. Lisboa\n\nGroup Product Manager na TotalPass | Head de Produto\n\n"
+        }
+      }
+    ],
+    "When clicking ‘Test workflow’": [
+      {
+        "json": {}
+      }
+    ],
+    "HTTP Request": [
+      {
+        "json": {}
+      }
+    ],
+    "FileUpdated1": [
+      {
+        "json": {
+          "exportLinks": {
+            "application/rtf": "https://docs.google.com/feeds/download/documents/export/Export?id=15pWZhawTX2JjqFxzn2MrZ_Lhx5e2o-pN5bOjSv7ub3w&exportFormat=rtf",
+            "application/vnd.oasis.opendocument.text": "https://docs.google.com/feeds/download/documents/export/Export?id=15pWZhawTX2JjqFxzn2MrZ_Lhx5e2o-pN5bOjSv7ub3w&exportFormat=odt",
+            "text/html": "https://docs.google.com/feeds/download/documents/export/Export?id=15pWZhawTX2JjqFxzn2MrZ_Lhx5e2o-pN5bOjSv7ub3w&exportFormat=html",
+            "application/pdf": "https://docs.google.com/feeds/download/documents/export/Export?id=15pWZhawTX2JjqFxzn2MrZ_Lhx5e2o-pN5bOjSv7ub3w&exportFormat=pdf",
+            "text/x-markdown": "https://docs.google.com/feeds/download/documents/export/Export?id=15pWZhawTX2JjqFxzn2MrZ_Lhx5e2o-pN5bOjSv7ub3w&exportFormat=markdown",
+            "text/markdown": "https://docs.google.com/feeds/download/documents/export/Export?id=15pWZhawTX2JjqFxzn2MrZ_Lhx5e2o-pN5bOjSv7ub3w&exportFormat=markdown",
+            "application/epub+zip": "https://docs.google.com/feeds/download/documents/export/Export?id=15pWZhawTX2JjqFxzn2MrZ_Lhx5e2o-pN5bOjSv7ub3w&exportFormat=epub",
+            "application/zip": "https://docs.google.com/feeds/download/documents/export/Export?id=15pWZhawTX2JjqFxzn2MrZ_Lhx5e2o-pN5bOjSv7ub3w&exportFormat=zip",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "https://docs.google.com/feeds/download/documents/export/Export?id=15pWZhawTX2JjqFxzn2MrZ_Lhx5e2o-pN5bOjSv7ub3w&exportFormat=docx",
+            "text/plain": "https://docs.google.com/feeds/download/documents/export/Export?id=15pWZhawTX2JjqFxzn2MrZ_Lhx5e2o-pN5bOjSv7ub3w&exportFormat=txt"
+          },
+          "parents": [
+            "1RxceLxln56zp8g5kCTnxCUbSUqDqW6X3"
+          ],
+          "lastModifyingUser": {
+            "displayName": "maykbrito",
+            "kind": "drive#user",
+            "me": false,
+            "permissionId": "18100302714319650338",
+            "emailAddress": "maykbrito@gmail.com",
+            "photoLink": "https://lh3.googleusercontent.com/a-/ALV-UjXpI-xS9mynfBoS_QEHn-D2hEas0zXCVzwgrrCKZGaq92W5qIvvwg=s64"
+          },
+          "owners": [
+            {
+              "displayName": "maykbrito",
+              "kind": "drive#user",
+              "me": false,
+              "permissionId": "18100302714319650338",
+              "emailAddress": "maykbrito@gmail.com",
+              "photoLink": "https://lh3.googleusercontent.com/a-/ALV-UjXpI-xS9mynfBoS_QEHn-D2hEas0zXCVzwgrrCKZGaq92W5qIvvwg=s64"
+            }
+          ],
+          "sharingUser": {
+            "displayName": "maykbrito",
+            "kind": "drive#user",
+            "me": false,
+            "permissionId": "18100302714319650338",
+            "emailAddress": "maykbrito@gmail.com",
+            "photoLink": "https://lh3.googleusercontent.com/a-/ALV-UjXpI-xS9mynfBoS_QEHn-D2hEas0zXCVzwgrrCKZGaq92W5qIvvwg=s64"
+          },
+          "permissions": [
+            {
+              "kind": "drive#permission",
+              "id": "18100302714319650338",
+              "type": "user",
+              "emailAddress": "maykbrito@gmail.com",
+              "role": "owner",
+              "displayName": "maykbrito",
+              "photoLink": "https://lh3.googleusercontent.com/a-/ALV-UjXpI-xS9mynfBoS_QEHn-D2hEas0zXCVzwgrrCKZGaq92W5qIvvwg=s64",
+              "deleted": false,
+              "pendingOwner": false
+            },
+            {
+              "kind": "drive#permission",
+              "id": "09446318931908177173",
+              "type": "user",
+              "emailAddress": "mayk.r.brito@gmail.com",
+              "role": "writer",
+              "displayName": "Mayk Romanosque Brito",
+              "photoLink": "https://lh3.googleusercontent.com/a/ACg8ocJMAl13oMA34kz6Xw0ySKfXsXWuxe2awut6Bvkxm8VTAaWzNg=s64",
+              "deleted": false,
+              "pendingOwner": false
+            }
+          ],
+          "spaces": [
+            "drive"
+          ],
+          "capabilities": {
+            "canAcceptOwnership": false,
+            "canAddChildren": false,
+            "canAddMyDriveParent": false,
+            "canChangeCopyRequiresWriterPermission": false,
+            "canChangeItemDownloadRestriction": false,
+            "canChangeSecurityUpdateEnabled": false,
+            "canChangeViewersCanCopyContent": false,
+            "canComment": true,
+            "canCopy": true,
+            "canDelete": false,
+            "canDisableInheritedPermissions": false,
+            "canDownload": true,
+            "canEdit": true,
+            "canEnableInheritedPermissions": true,
+            "canListChildren": false,
+            "canModifyContent": true,
+            "canModifyContentRestriction": true,
+            "canModifyEditorContentRestriction": true,
+            "canModifyOwnerContentRestriction": false,
+            "canModifyLabels": false,
+            "canMoveChildrenWithinDrive": false,
+            "canMoveItemIntoTeamDrive": false,
+            "canMoveItemOutOfDrive": false,
+            "canMoveItemWithinDrive": true,
+            "canReadLabels": false,
+            "canReadRevisions": true,
+            "canRemoveChildren": false,
+            "canRemoveContentRestriction": false,
+            "canRemoveMyDriveParent": true,
+            "canRename": true,
+            "canShare": true,
+            "canTrash": false,
+            "canUntrash": false
+          },
+          "permissionIds": [
+            "18100302714319650338",
+            "09446318931908177173"
+          ],
+          "linkShareMetadata": {
+            "securityUpdateEligible": false,
+            "securityUpdateEnabled": true
+          },
+          "downloadRestrictions": {
+            "itemDownloadRestriction": {
+              "restrictedForReaders": false,
+              "restrictedForWriters": false
+            },
+            "effectiveDownloadRestrictionWithContext": {
+              "restrictedForReaders": false,
+              "restrictedForWriters": false
+            }
+          },
+          "kind": "drive#file",
+          "id": "15pWZhawTX2JjqFxzn2MrZ_Lhx5e2o-pN5bOjSv7ub3w",
+          "name": "Objeções",
+          "mimeType": "application/vnd.google-apps.document",
+          "starred": false,
+          "trashed": false,
+          "explicitlyTrashed": false,
+          "version": "46",
+          "webViewLink": "https://docs.google.com/document/d/15pWZhawTX2JjqFxzn2MrZ_Lhx5e2o-pN5bOjSv7ub3w/edit?usp=drivesdk",
+          "iconLink": "https://drive-thirdparty.googleusercontent.com/16/type/application/vnd.google-apps.document",
+          "hasThumbnail": true,
+          "thumbnailLink": "https://lh3.googleusercontent.com/drive-storage/AJQWtBOCva45j4cmlVmkiIUxoTbNCfNiqohnJUS8NnmraxV7zkm-molOExG9wrfFsI-KLGYJk4sdZfO61vNEVCjGuBSuQNnGO2ksZXgJ-6g0T72UqjgsBSbIUdpUE4G3AQ=s220",
+          "thumbnailVersion": "8",
+          "viewedByMe": false,
+          "createdTime": "2025-06-04T23:37:01.559Z",
+          "modifiedTime": "2025-10-23T19:43:37.347Z",
+          "modifiedByMe": false,
+          "sharedWithMeTime": "2025-10-23T19:43:37.616Z",
+          "shared": true,
+          "ownedByMe": false,
+          "viewersCanCopyContent": true,
+          "copyRequiresWriterPermission": false,
+          "writersCanShare": true,
+          "size": "2721",
+          "quotaBytesUsed": "2721",
+          "isAppAuthorized": false,
+          "inheritedPermissionsDisabled": false
+        }
+      }
+    ],
+    "FileDeleted1": [
+      {
+        "json": {
+          "exportLinks": {
+            "application/rtf": "https://docs.google.com/feeds/download/documents/export/Export?id=1mA5yjywhrQIuVeWaJnL0zujDOdgOxo1_ZcOjTvf6JJU&exportFormat=rtf",
+            "application/vnd.oasis.opendocument.text": "https://docs.google.com/feeds/download/documents/export/Export?id=1mA5yjywhrQIuVeWaJnL0zujDOdgOxo1_ZcOjTvf6JJU&exportFormat=odt",
+            "text/html": "https://docs.google.com/feeds/download/documents/export/Export?id=1mA5yjywhrQIuVeWaJnL0zujDOdgOxo1_ZcOjTvf6JJU&exportFormat=html",
+            "application/pdf": "https://docs.google.com/feeds/download/documents/export/Export?id=1mA5yjywhrQIuVeWaJnL0zujDOdgOxo1_ZcOjTvf6JJU&exportFormat=pdf",
+            "text/x-markdown": "https://docs.google.com/feeds/download/documents/export/Export?id=1mA5yjywhrQIuVeWaJnL0zujDOdgOxo1_ZcOjTvf6JJU&exportFormat=markdown",
+            "text/markdown": "https://docs.google.com/feeds/download/documents/export/Export?id=1mA5yjywhrQIuVeWaJnL0zujDOdgOxo1_ZcOjTvf6JJU&exportFormat=markdown",
+            "application/epub+zip": "https://docs.google.com/feeds/download/documents/export/Export?id=1mA5yjywhrQIuVeWaJnL0zujDOdgOxo1_ZcOjTvf6JJU&exportFormat=epub",
+            "application/zip": "https://docs.google.com/feeds/download/documents/export/Export?id=1mA5yjywhrQIuVeWaJnL0zujDOdgOxo1_ZcOjTvf6JJU&exportFormat=zip",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "https://docs.google.com/feeds/download/documents/export/Export?id=1mA5yjywhrQIuVeWaJnL0zujDOdgOxo1_ZcOjTvf6JJU&exportFormat=docx",
+            "text/plain": "https://docs.google.com/feeds/download/documents/export/Export?id=1mA5yjywhrQIuVeWaJnL0zujDOdgOxo1_ZcOjTvf6JJU&exportFormat=txt"
+          },
+          "parents": [
+            "1MJ-lgO5WNO2_9RVtnLnIoCtOq-qozIpF"
+          ],
+          "lastModifyingUser": {
+            "displayName": "maykbrito",
+            "kind": "drive#user",
+            "me": false,
+            "permissionId": "18100302714319650338",
+            "emailAddress": "maykbrito@gmail.com",
+            "photoLink": "https://lh3.googleusercontent.com/a-/ALV-UjXpI-xS9mynfBoS_QEHn-D2hEas0zXCVzwgrrCKZGaq92W5qIvvwg=s64"
+          },
+          "owners": [
+            {
+              "displayName": "maykbrito",
+              "kind": "drive#user",
+              "me": false,
+              "permissionId": "18100302714319650338",
+              "emailAddress": "maykbrito@gmail.com",
+              "photoLink": "https://lh3.googleusercontent.com/a-/ALV-UjXpI-xS9mynfBoS_QEHn-D2hEas0zXCVzwgrrCKZGaq92W5qIvvwg=s64"
+            }
+          ],
+          "permissions": [
+            {
+              "kind": "drive#permission",
+              "id": "18100302714319650338",
+              "type": "user",
+              "emailAddress": "maykbrito@gmail.com",
+              "role": "owner",
+              "displayName": "maykbrito",
+              "photoLink": "https://lh3.googleusercontent.com/a-/ALV-UjXpI-xS9mynfBoS_QEHn-D2hEas0zXCVzwgrrCKZGaq92W5qIvvwg=s64",
+              "deleted": false,
+              "pendingOwner": false
+            },
+            {
+              "kind": "drive#permission",
+              "id": "09446318931908177173",
+              "type": "user",
+              "emailAddress": "mayk.r.brito@gmail.com",
+              "role": "writer",
+              "displayName": "Mayk Romanosque Brito",
+              "photoLink": "https://lh3.googleusercontent.com/a/ACg8ocJMAl13oMA34kz6Xw0ySKfXsXWuxe2awut6Bvkxm8VTAaWzNg=s64",
+              "deleted": false,
+              "pendingOwner": false
+            }
+          ],
+          "spaces": [
+            "drive"
+          ],
+          "capabilities": {
+            "canAcceptOwnership": false,
+            "canAddChildren": false,
+            "canAddMyDriveParent": false,
+            "canChangeCopyRequiresWriterPermission": false,
+            "canChangeItemDownloadRestriction": false,
+            "canChangeSecurityUpdateEnabled": false,
+            "canChangeViewersCanCopyContent": false,
+            "canComment": true,
+            "canCopy": true,
+            "canDelete": false,
+            "canDisableInheritedPermissions": false,
+            "canDownload": true,
+            "canEdit": true,
+            "canEnableInheritedPermissions": true,
+            "canListChildren": false,
+            "canModifyContent": true,
+            "canModifyContentRestriction": true,
+            "canModifyEditorContentRestriction": true,
+            "canModifyOwnerContentRestriction": false,
+            "canModifyLabels": false,
+            "canMoveChildrenWithinDrive": false,
+            "canMoveItemIntoTeamDrive": false,
+            "canMoveItemOutOfDrive": false,
+            "canMoveItemWithinDrive": true,
+            "canReadLabels": false,
+            "canReadRevisions": true,
+            "canRemoveChildren": false,
+            "canRemoveContentRestriction": false,
+            "canRemoveMyDriveParent": true,
+            "canRename": true,
+            "canShare": true,
+            "canTrash": false,
+            "canUntrash": false
+          },
+          "permissionIds": [
+            "18100302714319650338",
+            "09446318931908177173"
+          ],
+          "linkShareMetadata": {
+            "securityUpdateEligible": false,
+            "securityUpdateEnabled": true
+          },
+          "downloadRestrictions": {
+            "itemDownloadRestriction": {
+              "restrictedForReaders": false,
+              "restrictedForWriters": false
+            },
+            "effectiveDownloadRestrictionWithContext": {
+              "restrictedForReaders": false,
+              "restrictedForWriters": false
+            }
+          },
+          "kind": "drive#file",
+          "id": "1mA5yjywhrQIuVeWaJnL0zujDOdgOxo1_ZcOjTvf6JJU",
+          "name": "Faculdade de Tecnologia Rocketseat",
+          "mimeType": "application/vnd.google-apps.document",
+          "starred": false,
+          "trashed": false,
+          "explicitlyTrashed": false,
+          "version": "78",
+          "webViewLink": "https://docs.google.com/document/d/1mA5yjywhrQIuVeWaJnL0zujDOdgOxo1_ZcOjTvf6JJU/edit?usp=drivesdk",
+          "iconLink": "https://drive-thirdparty.googleusercontent.com/16/type/application/vnd.google-apps.document",
+          "hasThumbnail": true,
+          "thumbnailLink": "https://lh3.googleusercontent.com/drive-storage/AJQWtBNc6ygl4A-AzcAAAw95ECKjqIRhjJzIv8yGY-5TykhMMkSA9IW8Oc6a7W7dpil6GRbt08WJZXkzqP-jxtpYAIxNugdjDV_uwm5nkp1rqlfdfM2KU6mtObe1f2yv=s220",
+          "thumbnailVersion": "13",
+          "viewedByMe": false,
+          "createdTime": "2025-05-20T16:53:48.742Z",
+          "modifiedTime": "2025-10-23T22:48:17.843Z",
+          "modifiedByMe": false,
+          "shared": true,
+          "ownedByMe": false,
+          "viewersCanCopyContent": true,
+          "copyRequiresWriterPermission": false,
+          "writersCanShare": true,
+          "size": "8346",
+          "quotaBytesUsed": "8346",
+          "isAppAuthorized": false,
+          "inheritedPermissionsDisabled": false
+        }
+      }
+    ]
+  },
+  "versionId": "d2377eaa-3a5d-47fd-b918-c5666194a68d",
+  "activeVersionId": null,
+  "versionCounter": 6,
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-01-10T18:59:29.816Z",
+      "createdAt": "2026-01-10T18:59:29.816Z",
+      "role": "workflow:owner",
+      "workflowId": "l3__v1QpobGlKaN7pdnlE",
+      "projectId": "KJmJjXU6WIKLG4AK",
+      "project": {
+        "updatedAt": "2026-01-10T18:53:50.892Z",
+        "createdAt": "2026-01-10T18:52:42.146Z",
+        "id": "KJmJjXU6WIKLG4AK",
+        "name": "Thiago Saquette <thiago.saquettepj@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "c37b11cb-f095-4606-a8c4-33dfebd99441"
+      }
+    }
+  ]
+}
