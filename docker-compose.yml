@@ -39,3 +39,15 @@ services:
       - MY_TELEGRAM_ID=${MY_TELEGRAM_ID:-}
     volumes:
       - n8n_data:/home/node/.n8n
+  # NGROK - Servidor de Proxy
+  ngrok:
+    image: ngrok/ngrok:latest
+    container_name: n8n_ngrok_2
+    restart: always
+    depends_on:
+      - n8n
+    command: http --url=${NGROK_DOMAIN} n8n:5678
+    environment:
+      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN:-}
+    ports:
+      - "4040:4040"

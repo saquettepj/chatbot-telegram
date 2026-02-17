@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-02-16T22:47:13.277Z",
-  "createdAt": "2026-02-16T18:28:37.557Z",
-  "id": "WaCpQl1V7GiC5Fh9gwz0X",
-  "name": "atividade_n8n_pos_work_core",
+  "updatedAt": "2026-02-17T00:52:32.343Z",
+  "createdAt": "2026-02-17T00:47:51.047Z",
+  "id": "AF5NrSVMpYuQKUri",
+  "name": "workflow-telegram-chatbot",
   "description": null,
   "active": true,
   "isArchived": false,
@@ -14,10 +14,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        16,
-        -336
+        -416,
+        256
       ],
-      "id": "1d865b6f-0de4-41a9-924c-bc9556ecf1df",
+      "id": "0214a0aa-84df-476d-8962-7fbc3deedf99",
       "name": "validate_and_transform"
     },
     {
@@ -48,10 +48,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        224,
-        -336
+        -208,
+        256
       ],
-      "id": "6dccc5e3-cc16-4422-90b4-4f87180df6a8",
+      "id": "d380e559-3f51-4b52-b7b2-960945ede045",
       "name": "has_error"
     },
     {
@@ -64,15 +64,15 @@
       "type": "n8n-nodes-base.telegramTrigger",
       "typeVersion": 1.2,
       "position": [
-        -224,
-        -336
+        -656,
+        256
       ],
-      "id": "56390220-f8a0-41ea-b32c-199a10f492a0",
+      "id": "838a5e22-0c27-4f64-867a-fde3dc252e27",
       "name": "message_trigger",
       "webhookId": "63b6ce5d-5ece-495b-a722-79672c30e1c1",
       "credentials": {
         "telegramApi": {
-          "id": "rUzBztp5Bs6Z0mRi",
+          "id": "ilGgK3D4VcRyOIPD",
           "name": "Telegram account"
         }
       }
@@ -102,10 +102,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        640,
-        -240
+        208,
+        352
       ],
-      "id": "64303fa9-28fd-4b86-bca3-a31d221ead84",
+      "id": "6e3a3d15-bed8-49a1-898e-2e535d7ceb94",
       "name": "get_geolocation_by_city_and_uf",
       "alwaysOutputData": true
     },
@@ -165,10 +165,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        864,
-        -240
+        432,
+        352
       ],
-      "id": "5f639d46-da8c-4c79-88d6-c85cdec7ba3f",
+      "id": "f16a0382-3f05-4e29-9bc8-6f5a4d96e3d7",
       "name": "check_the_results"
     },
     {
@@ -178,10 +178,10 @@
       "type": "n8n-nodes-base.stopAndError",
       "typeVersion": 1,
       "position": [
-        432,
-        -432
+        0,
+        160
       ],
-      "id": "d68aadf6-3abd-452d-831d-509812aedd1b",
+      "id": "da9d3bc2-d6b4-4e7b-b421-9062f993ec8c",
       "name": "throw_validation_error"
     },
     {
@@ -191,10 +191,10 @@
       "type": "n8n-nodes-base.stopAndError",
       "typeVersion": 1,
       "position": [
-        1088,
-        0
+        656,
+        592
       ],
-      "id": "f2365ecc-69d5-45e8-9c5e-585c26637980",
+      "id": "afb5b6f2-da4d-4882-8d73-a76150e871e7",
       "name": "throw_geolocation_http_error"
     },
     {
@@ -208,15 +208,15 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        432,
-        -592
+        0,
+        0
       ],
-      "id": "e78170e2-42f9-49c6-a57c-4425e7d86710",
+      "id": "69cd06a3-611b-405b-b850-b2e35c6dc83f",
       "name": "message_with_error",
       "webhookId": "8ecfa472-bb52-4140-8b26-ecf00b30c355",
       "credentials": {
         "telegramApi": {
-          "id": "rUzBztp5Bs6Z0mRi",
+          "id": "ilGgK3D4VcRyOIPD",
           "name": "Telegram account"
         }
       }
@@ -232,15 +232,15 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1088,
-        -160
+        656,
+        432
       ],
-      "id": "f52f1e0c-cb03-4532-ba7d-b5d6ca263009",
+      "id": "5ca63f0a-821e-4753-903e-d07a2b98fb13",
       "name": "message_with_error_2",
       "webhookId": "8ecfa472-bb52-4140-8b26-ecf00b30c355",
       "credentials": {
         "telegramApi": {
-          "id": "rUzBztp5Bs6Z0mRi",
+          "id": "ilGgK3D4VcRyOIPD",
           "name": "Telegram account"
         }
       }
@@ -278,10 +278,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        1088,
-        -336
+        656,
+        256
       ],
-      "id": "b8e157bd-bcbf-43fb-9414-6584c20e0cae",
+      "id": "7773d5da-8537-4406-a2cb-2bfe19cdf003",
       "name": "get_weather_by_lat_lon",
       "alwaysOutputData": true
     },
@@ -308,10 +308,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        432,
-        -240
+        0,
+        352
       ],
-      "id": "eef12cbf-5b04-48e6-acbd-b2d36a4a3d1d",
+      "id": "6ad563f8-ba03-4692-9fa7-2e6517641eaa",
       "name": "my_api_key_value"
     },
     {
@@ -325,15 +325,15 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1504,
-        -336
+        1072,
+        256
       ],
-      "id": "152d402b-482d-451e-a2a5-e034c1ebe607",
+      "id": "f436c89e-30b2-43d5-b9cb-f7751da8f2f0",
       "name": "message_with_success",
       "webhookId": "8ecfa472-bb52-4140-8b26-ecf00b30c355",
       "credentials": {
         "telegramApi": {
-          "id": "rUzBztp5Bs6Z0mRi",
+          "id": "ilGgK3D4VcRyOIPD",
           "name": "Telegram account"
         }
       }
@@ -345,11 +345,34 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1296,
-        -336
+        864,
+        256
       ],
-      "id": "d6f63707-b1bf-487a-9826-9779df053b4f",
+      "id": "cc7d62bc-e8ec-49e1-813a-40a223fd9f1a",
       "name": "transform_success_response"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ae1860a5-d419-41f1-979c-f18a1738ec0d",
+              "name": "env",
+              "value": "={{ $env['TELEGRAM_BOT_TOKEN'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -528,
+        528
+      ],
+      "id": "a0e246b8-014e-478c-ba12-ac7e188286d5",
+      "name": "get_env"
     }
   ],
   "connections": {
@@ -468,10 +491,8 @@
   },
   "settings": {
     "executionOrder": "v1",
-    "availableInMCP": false,
-    "timeSavedMode": "fixed",
-    "callerPolicy": "workflowsFromSameOwner",
-    "errorWorkflow": "Yh9u38xKkqRp0SXEBp-Vj"
+    "binaryMode": "separate",
+    "availableInMCP": false
   },
   "staticData": null,
   "meta": {
@@ -538,55 +559,29 @@
           "item": 0
         }
       }
-    ],
-    "message_trigger": [
-      {
-        "json": {
-          "update_id": 540633937,
-          "message": {
-            "message_id": 33,
-            "from": {
-              "id": 6668426258,
-              "is_bot": false,
-              "first_name": "Thiago S.",
-              "language_code": "pt-br"
-            },
-            "chat": {
-              "id": 6668426258,
-              "first_name": "Thiago S.",
-              "type": "private"
-            },
-            "date": 1771281956,
-            "text": "Urupeme, SC"
-          }
-        },
-        "pairedItem": {
-          "item": 0
-        }
-      }
     ]
   },
-  "versionId": "248a53f0-7d38-4c83-ab9f-3d028d244ee8",
-  "activeVersionId": "248a53f0-7d38-4c83-ab9f-3d028d244ee8",
-  "versionCounter": 353,
+  "versionId": "0b6c4830-3030-49bc-a7af-d3b80219b0fb",
+  "activeVersionId": "0b6c4830-3030-49bc-a7af-d3b80219b0fb",
+  "versionCounter": 10,
   "triggerCount": 1,
   "tags": [],
   "shared": [
     {
-      "updatedAt": "2026-02-16T18:28:37.557Z",
-      "createdAt": "2026-02-16T18:28:37.557Z",
+      "updatedAt": "2026-02-17T00:47:51.049Z",
+      "createdAt": "2026-02-17T00:47:51.049Z",
       "role": "workflow:owner",
-      "workflowId": "WaCpQl1V7GiC5Fh9gwz0X",
-      "projectId": "i95oXQYAD5RP6Jwj",
+      "workflowId": "AF5NrSVMpYuQKUri",
+      "projectId": "ubGScFCzCUmzjSkT",
       "project": {
-        "updatedAt": "2026-01-24T11:21:28.107Z",
-        "createdAt": "2026-01-24T11:13:34.308Z",
-        "id": "i95oXQYAD5RP6Jwj",
-        "name": "Thiago  Saquette <thigo.saquette@gmail.com>",
+        "updatedAt": "2026-02-17T00:47:19.718Z",
+        "createdAt": "2026-02-17T00:46:42.955Z",
+        "id": "ubGScFCzCUmzjSkT",
+        "name": "teste teste <thigo.saquette@gmail.com>",
         "type": "personal",
         "icon": null,
         "description": null,
-        "creatorId": "71cb6906-aa6d-46d6-9d5a-fc45006b4b0b"
+        "creatorId": "9a23cab3-c651-4737-b401-6d3cc0a940f4"
       }
     }
   ]

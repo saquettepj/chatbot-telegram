@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-02-16T22:29:21.952Z",
-  "createdAt": "2026-02-16T18:29:02.199Z",
-  "id": "Yh9u38xKkqRp0SXEBp-Vj",
-  "name": "atividade_n8n_pos_work_error_handler",
+  "updatedAt": "2026-02-17T00:52:05.895Z",
+  "createdAt": "2026-02-17T00:50:39.847Z",
+  "id": "rhgEDMUQUBJ8DNpv",
+  "name": "error-handler",
   "description": null,
-  "active": true,
+  "active": false,
   "isArchived": false,
   "nodes": [
     {
@@ -12,10 +12,10 @@
       "type": "n8n-nodes-base.errorTrigger",
       "typeVersion": 1,
       "position": [
-        -384,
-        -48
+        0,
+        0
       ],
-      "id": "faf22efb-731a-435f-b611-ee42897edf1b",
+      "id": "0d2e3650-ae9b-4736-8ef9-faf025fbf766",
       "name": "Error Trigger",
       "alwaysOutputData": false
     },
@@ -30,18 +30,41 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        -176,
-        -48
+        208,
+        0
       ],
-      "id": "95882021-a7ed-4746-99ae-03a4b4edabc5",
+      "id": "eb253810-2fc6-4ed9-92b3-6cae99b9ae91",
       "name": "Send a text message",
       "webhookId": "5eaf087d-3f15-4107-85f1-6ad6104f35b5",
       "credentials": {
         "telegramApi": {
-          "id": "rUzBztp5Bs6Z0mRi",
+          "id": "ilGgK3D4VcRyOIPD",
           "name": "Telegram account"
         }
       }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "50687d98-2b52-468e-aa90-0fce315df8b7",
+              "name": "env",
+              "value": "={{ $env['MY_TELEGRAM_ID'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        96,
+        224
+      ],
+      "id": "e51e3273-2d09-410b-af27-a9e21d1e6c95",
+      "name": "get_env"
     }
   ],
   "connections": {
@@ -59,6 +82,7 @@
   },
   "settings": {
     "executionOrder": "v1",
+    "binaryMode": "separate",
     "availableInMCP": false
   },
   "staticData": null,
@@ -120,27 +144,27 @@
       }
     ]
   },
-  "versionId": "b1ff8050-7eca-4361-9230-2179f34de926",
-  "activeVersionId": "b1ff8050-7eca-4361-9230-2179f34de926",
-  "versionCounter": 51,
+  "versionId": "72301b22-a264-4674-a11e-4d5709891594",
+  "activeVersionId": null,
+  "versionCounter": 12,
   "triggerCount": 0,
   "tags": [],
   "shared": [
     {
-      "updatedAt": "2026-02-16T18:29:02.199Z",
-      "createdAt": "2026-02-16T18:29:02.199Z",
+      "updatedAt": "2026-02-17T00:50:39.848Z",
+      "createdAt": "2026-02-17T00:50:39.848Z",
       "role": "workflow:owner",
-      "workflowId": "Yh9u38xKkqRp0SXEBp-Vj",
-      "projectId": "i95oXQYAD5RP6Jwj",
+      "workflowId": "rhgEDMUQUBJ8DNpv",
+      "projectId": "ubGScFCzCUmzjSkT",
       "project": {
-        "updatedAt": "2026-01-24T11:21:28.107Z",
-        "createdAt": "2026-01-24T11:13:34.308Z",
-        "id": "i95oXQYAD5RP6Jwj",
-        "name": "Thiago  Saquette <thigo.saquette@gmail.com>",
+        "updatedAt": "2026-02-17T00:47:19.718Z",
+        "createdAt": "2026-02-17T00:46:42.955Z",
+        "id": "ubGScFCzCUmzjSkT",
+        "name": "teste teste <thigo.saquette@gmail.com>",
         "type": "personal",
         "icon": null,
         "description": null,
-        "creatorId": "71cb6906-aa6d-46d6-9d5a-fc45006b4b0b"
+        "creatorId": "9a23cab3-c651-4737-b401-6d3cc0a940f4"
       }
     }
   ]

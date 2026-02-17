@@ -14,7 +14,7 @@ class C:
 
 def pc(text: str, color: str = C.NC, end: str = "\n"): print(f"{color}{text}{C.NC}", end=end)
 
-def check_container(container: str = "n8n_editor") -> bool:
+def check_container(container: str = "n8n") -> bool:
     try: return container in subprocess.run(["docker", "ps"], capture_output=True, text=True, check=True).stdout
     except: return False
 
@@ -66,22 +66,22 @@ def export_workflows():
     workflows_dir, archived_dir = project_dir / "workflows", project_dir / "workflows" / "archived"
     
     pc("=== Exporting Workflows from N8N ===", C.B)
-    if not check_container(): pc("Error: Container n8n_editor is not running", C.R); sys.exit(1)
+    if not check_container(): pc("Error: Container n8n is not running", C.R); sys.exit(1)
     
     cmd = "cd /tmp && rm -rf workflows_export workflows_renamed workflows_archived && mkdir -p workflows_export workflows_renamed workflows_archived && n8n export:workflow --all --output=/tmp/workflows_export --backup > /dev/null 2>&1"
-    if not docker_exec("n8n_editor", cmd)[0]: pc("Error exporting workflows from n8n", C.R); sys.exit(1)
+    if not docker_exec("n8n", cmd)[0]: pc("Error exporting workflows from n8n", C.R); sys.exit(1)
     
-    _, stdout, _ = docker_exec("n8n_editor", "ls /tmp/workflows_export/*.json 2>/dev/null || true")
+    _, stdout, _ = docker_exec("n8n", "ls /tmp/workflows_export/*.json 2>/dev/null || true")
     if not stdout.strip(): pc("No workflows found to export", C.Y); return
     
     success_count, no_name_errors, duplicate_errors, processed = 0, [], [], {}
     
     for wf_file in [f.strip() for f in stdout.strip().split('\n') if f.strip()]:
         temp_file = f"/tmp/workflow_temp_{os.path.basename(wf_file)}"
-        docker_exec("n8n_editor", f"cp {wf_file} {temp_file}")
+        docker_exec("n8n", f"cp {wf_file} {temp_file}")
         
-        success, json_content, _ = docker_exec("n8n_editor", f"cat {temp_file}")
-        if not success or not json_content: success, json_content, _ = docker_exec("n8n_editor", f"cat {wf_file}")
+        success, json_content, _ = docker_exec("n8n", f"cat {temp_file}")
+        if not success or not json_content: success, json_content, _ = docker_exec("n8n", f"cat {wf_file}")
         if not success or not json_content: continue
         
         try: workflow_data = json.loads(json_content.strip() or json_content)
@@ -102,24 +102,24 @@ def export_workflows():
             
             if should_replace:
                 duplicate_errors.append({"name": wf_name, "kept_id": wf_id, "ignored_id": ex["id"], "kept_status": "arquivado" if is_archived else "ativo", "ignored_status": "arquivado" if ex["is_archived"] else "ativo"})
-                docker_exec("n8n_editor", f"rm -f /tmp/workflows_renamed/{safe_name}.json /tmp/workflows_archived/{safe_name}.json")
+                docker_exec("n8n", f"rm -f /tmp/workflows_renamed/{safe_name}.json /tmp/workflows_archived/{safe_name}.json")
             else:
                 duplicate_errors.append({"name": wf_name, "kept_id": ex["id"], "ignored_id": wf_id, "kept_status": "arquivado" if ex["is_archived"] else "ativo", "ignored_status": "arquivado" if is_archived else "ativo"})
                 continue
         
         dest_dir = "/tmp/workflows_archived" if is_archived else "/tmp/workflows_renamed"
-        docker_exec("n8n_editor", f"cp {wf_file} {dest_dir}/{safe_name}.json")
+        docker_exec("n8n", f"cp {wf_file} {dest_dir}/{safe_name}.json")
         processed[safe_name] = {"id": wf_id, "name": wf_name, "safe_name": safe_name, "is_archived": is_archived, "updated_at": updated_at}
         
         pc(f"[OK]", C.G, end=" ")
         print(f"{wf_name} -> {safe_name}.json{f' [{C.Y}archived{C.NC}]' if is_archived else ''}")
         success_count += 1
-        docker_exec("n8n_editor", f"rm -f {temp_file}")
+        docker_exec("n8n", f"rm -f {temp_file}")
     
     workflows_dir.mkdir(parents=True, exist_ok=True)
     archived_dir.mkdir(parents=True, exist_ok=True)
-    subprocess.run(["docker", "cp", "n8n_editor:/tmp/workflows_renamed/.", str(workflows_dir)], capture_output=True)
-    subprocess.run(["docker", "cp", "n8n_editor:/tmp/workflows_archived/.", str(archived_dir)], capture_output=True)
+    subprocess.run(["docker", "cp", "n8n:/tmp/workflows_renamed/.", str(workflows_dir)], capture_output=True)
+    subprocess.run(["docker", "cp", "n8n:/tmp/workflows_archived/.", str(archived_dir)], capture_output=True)
     
     error_count = 0
     if no_name_errors or duplicate_errors:
