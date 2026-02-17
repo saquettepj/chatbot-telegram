@@ -30,7 +30,7 @@ docker compose up -d --build
 ```
 
 Após o processo terminar, o n8n estará disponível no seu navegador em:
-👉 http://nome_do_seu_dominio_ngrok:5678/setup
+👉 http://nome_do_seu_dominio_ngrok/setup
 
 🔴 **Obrigatório:** Configure a sua credencial Token no nó do Telegram, insira seu token ou acesse sua .env pela expressão {{ $env['TELEGRAM_BOT_TOKEN'] }}.
 > 💡 **Observação:** O N8N parece estar retornando erro ao tentar acessar a env, mas vai funcionar. Para publicar o workflow teste sem a env e depois que der sucesso, utilizie a env.
