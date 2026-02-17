@@ -1,8 +1,21 @@
-# 🚀 n8n Automation Starter
+# N8N - Automação de Workflows
 
 Este projeto fornece uma configuração simplificada do n8n utilizando Docker Compose, ideal para automações com Telegram e OpenWeather.
 
-## 🛠️ 1. Configurar Variáveis de Ambiente (.env)
+## Tecnologias Utilizadas
+
+![N8N](https://img.shields.io/badge/N8N-FF6D5B?style=for-the-badge&logo=n8n&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![NodeJS](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+
+## Pariculariidades do projeto
+1. Para ter acesso aos recursos do Telegram é necessario expor a maquina, por isso é obrigatório o uso de NGROK neste projeto.
+2. Configure a sua credencial Token no nó do Telegram, insira seu token ou acesse sua .env pela expressão {{ $env['TELEGRAM_BOT_TOKEN'] }} dentro do nó do Telegram.
+3. O N8N parece estar retornando erro ao tentar acessar a env, mas vai funcionar. Para publicar o workflow teste sem a env e depois que der sucesso, utilizie a env.
+
+## 1. Configurar Variáveis de Ambiente (.env) - OBRIGATÓRIO
 
 O n8n precisa de chaves específicas para funcionar corretamente. Você deve criar o seu arquivo `.env` baseado no exemplo fornecido.
 
@@ -19,9 +32,7 @@ O n8n precisa de chaves específicas para funcionar corretamente. Você deve cri
    - **NGROK_DOMAIN**: Insira seu domínio do [Ngrok Domain](https://dashboard.ngrok.com/domains).
    - **NGROK_AUTHTOKEN**: Insira seu token do [Ngrok Token](https://dashboard.ngrok.com/get-started/your-authtoken).
 
-🔴 **Obrigatório:** Para ter acesso aos recursos do Telegram é necessario expor a maquina, por isso é obrigatório o uso de NGROK neste projeto.
-
-## 📦 2. Como Subir o Projeto
+## 2. Como Subir o Projeto - OBRIGATÓRIO
 
 Com o Docker e o Docker Compose instalados, utilize o comando abaixo para construir a imagem e iniciar o container em segundo plano:
 
@@ -30,28 +41,24 @@ docker compose up -d --build
 ```
 
 Após o processo terminar, o n8n estará disponível no seu navegador em:
-👉 http://nome_do_seu_dominio_ngrok/setup
+`http://nome_do_seu_dominio_ngrok/setup`
 
-🔴 **Obrigatório:** Configure a sua credencial Token no nó do Telegram, insira seu token ou acesse sua .env pela expressão {{ $env['TELEGRAM_BOT_TOKEN'] }}.
-> 💡 **Observação:** O N8N parece estar retornando erro ao tentar acessar a env, mas vai funcionar. Para publicar o workflow teste sem a env e depois que der sucesso, utilizie a env.
+## 3. Como Exportar um Workflow
 
-## 📤 3. Como Exportar um Workflow
-
-Para salvar seu trabalho ou compartilhar uma automação com outras pessoas, siga os passos abaixo:
+Para salvar seu trabalho ou compartilhar uma automação:
 
 1. No painel do n8n, abra o **Workflow** que você deseja exportar.
 2. No canto superior direito da tela, clique no ícone de **Menu (três pontos ⋮)**.
 3. Selecione a opção **Download**.
 4. O n8n gerará e baixará um arquivo `.json` contendo toda a lógica e estrutura do seu fluxo.
 
-> 💡 **Dica:** Caso quiser, é possivel exportar e atualizar todos os workflows hospedados em docker com o script.
-> Execute ```python ./scripts/export-workflows ``` para exporta-los (mudar o nome do container afeta o script).
+**Dica:** É possível exportar e atualizar todos os workflows hospedados em docker com o script. Execute `python ./scripts/export-workflows` para exportá-los (mudar o nome do container afeta o script).
 
-## 🐳 Comandos Rápidos
+## Comandos Rápidos
 
 | Objetivo | Comando |
 | :--- | :--- |
-| **Ver logs** (monitorar erros) | `docker compose logs -f n8n` |
-| **Parar** o n8n | `docker compose stop` |
-| **Reiniciar** o container | `docker compose restart` |
-| **Remover containers** | `docker compose down` |
+| Ver logs | `docker compose logs -f n8n` |
+| Parar o n8n | `docker compose stop` |
+| Reiniciar container | `docker compose restart` |
+| Remover containers | `docker compose down` |
