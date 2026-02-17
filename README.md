@@ -10,7 +10,7 @@ Este projeto fornece uma configuração simplificada do n8n utilizando Docker Co
 [![NodeJS](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/docs/latest/api/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript)
 
-## Pariculariidades do projeto
+## Paricularidades do projeto
 1. Para ter acesso aos recursos do Telegram é necessario expor a maquina, por isso é obrigatório o uso de NGROK neste projeto.
 2. Configure a sua credencial Token no nó do Telegram! Insira a expressão `{{ $env['TELEGRAM_BOT_TOKEN'] }}` dentro do nó do Telegram para acessar o token.
 3. O N8N parece estar retornando erro ao tentar acessar a env, mas vai funcionar. Para publicar o workflow teste sem a env e depois que der sucesso, utilizie a env.
