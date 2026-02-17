@@ -4,15 +4,15 @@ Este projeto fornece uma configuração simplificada do n8n utilizando Docker Co
 
 ## Tecnologias Utilizadas
 
-![N8N](https://img.shields.io/badge/N8N-FF6D5B?style=for-the-badge&logo=n8n&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![NodeJS](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+[![N8N](https://img.shields.io/badge/N8N-FF6D5B?style=for-the-badge&logo=n8n&logoColor=white)](https://docs.n8n.io/)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://docs.docker.com/)
+[![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.pydocs.site/en)
+[![NodeJS](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/docs/latest/api/)
+[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript)
 
 ## Pariculariidades do projeto
 1. Para ter acesso aos recursos do Telegram é necessario expor a maquina, por isso é obrigatório o uso de NGROK neste projeto.
-2. Configure a sua credencial Token no nó do Telegram, insira seu token ou acesse sua .env pela expressão {{ $env['TELEGRAM_BOT_TOKEN'] }} dentro do nó do Telegram.
+2. Configure a sua credencial Token no nó do Telegram! Insira a expressão `{{ $env['TELEGRAM_BOT_TOKEN'] }}` dentro do nó do Telegram para acessar o token.
 3. O N8N parece estar retornando erro ao tentar acessar a env, mas vai funcionar. Para publicar o workflow teste sem a env e depois que der sucesso, utilizie a env.
 
 ## 1. Configurar Variáveis de Ambiente (.env) - OBRIGATÓRIO
@@ -52,7 +52,7 @@ Para salvar seu trabalho ou compartilhar uma automação:
 3. Selecione a opção **Download**.
 4. O n8n gerará e baixará um arquivo `.json` contendo toda a lógica e estrutura do seu fluxo.
 
-**Dica:** É possível exportar e atualizar todos os workflows hospedados em docker com o script. Execute `python ./scripts/export-workflows` para exportá-los (mudar o nome do container afeta o script).
+**Dica:** Execute `python ./scripts/export-workflows` para exportar Workflows para a pasta Workflows (mudar o nome do container docker afeta o script).
 
 ## Comandos Rápidos
 
