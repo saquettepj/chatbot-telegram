@@ -44,7 +44,8 @@ Para salvar seu trabalho ou compartilhar uma automação com outras pessoas, sig
 3. Selecione a opção **Download**.
 4. O n8n gerará e baixará um arquivo `.json` contendo toda a lógica e estrutura do seu fluxo.
 
-> 💡 **Dica:** Você também pode exportar rapidamente selecionando todos os nós com `Ctrl + A`, copiando com `Ctrl + C` e colando o código JSON diretamente onde desejar.
+> 💡 **Dica:** Caso quiser, é possivel exportar e atualizar todos os workflows hospedados em docker com o script.
+> Execute ```python ./scripts/export-workflows ``` para exporta-los (mudar o nome do container afeta o script).
 
 ## 🐳 Comandos Rápidos
 
